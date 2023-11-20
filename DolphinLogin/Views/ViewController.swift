@@ -7,18 +7,19 @@
 
 import UIKit
 
-class ViewController: UIViewController, NetworkMonitorDelegate, LoginViewDelegate {
+class ViewController: UIViewController, NetworkMonitorDelegate, LoginViewControllerDelegate, RegistrationViewControllerDelegate {
     
     let apiUrl = URL(string: "https://dummyjson.com/auth/login")
-//    guard let apiUrl = URL(string: "https://dummyjson.com/users/add") else { return }
+    
     private lazy var loginViewModel: LoginViewModelProtocol = {
         return LoginViewModel(apiUrl: apiUrl!)
     }()
-    private lazy var loginView: LoginView = {
-        let view = LoginView()
-        view.delegate = self
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    
+    private lazy var loginViewController: LoginViewController = {
+        let viewController = LoginViewController()
+        viewController.delegate = self
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        return viewController
     }()
     
     override func viewDidLoad() {
@@ -28,67 +29,39 @@ class ViewController: UIViewController, NetworkMonitorDelegate, LoginViewDelegat
         NetworkMonitor.shared.delegate = self
         NetworkMonitor.shared.startMonitoring()
         
-        loginView.delegate = self
+        loginViewController.delegate = self
         
-        view.addSubview(loginView)
+        view.addSubview(loginViewController.view)
         
         NSLayoutConstraint.activate([
-            loginView.topAnchor.constraint(equalTo: view.topAnchor),
-            loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            loginView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            loginViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            loginViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loginViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loginViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        //        view.addSubview(registrationView)
-        //
-        //        NSLayoutConstraint.activate([
-        //            registrationView.topAnchor.constraint(equalTo: view.topAnchor),
-        //            registrationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        //            registrationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        //            registrationView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        //        ])
-        
-        //        let addUserRequest = AddUserRequest(
-        //            email: "muh@muh.com",
-        //            password: "0123456789",
-        //            firstName: "Muhammad",
-        //            lastName: "Ovi",
-        //            gender: "Male",
-        //            age: 250
-        //        )
-        //
-        //        loginViewModel.addUser(request: addUserRequest) { addedUser in
-        //            if let addedUser = addedUser {
-        //                print("User added successfully:")
-        //                print("ID: \(addedUser.id)")
-        //                print("Password: \(addedUser.password)")
-        //                print("Email: \(addedUser.email)")
-        //                print("FirstName: \(addedUser.firstName)")
-        //                print("LastName: \(addedUser.lastName)")
-        //                print("Gender: \(addedUser.gender)")
-        //                print("Age: \(addedUser.age)")
-        //            } else {
-        //                print("Failed to add user.")
-        //            }
-        //        }
+        addChild(loginViewController)
+        loginViewController.didMove(toParent: self)
     }
+    
     func loginButtonPressed(username: String, password: String) {
         loginViewModel.loginUser(username: username, password: password) { [weak self] user in
             guard let self = self else { return }
             if let user = user {
                 DispatchQueue.main.async {
-                    let userInfoView = UserInfoView(user: user)
-                    
-                    self.loginView.removeFromSuperview()
-                    
-                    self.view.addSubview(userInfoView)
-                    userInfoView.frame = self.view.bounds
+                    let userInfoViewController = UserInfoViewController(user: user)
+                    self.navigationController?.pushViewController(userInfoViewController, animated: true)
                 }
             } else {
+                print("Error login button press")
             }
         }
     }
     
+    func registrationButtonPressed() {
+        let registrationViewController = RegistrationViewController()
+        self.navigationController?.pushViewController(registrationViewController, animated: true)
+    }
     
     func networkStatusDidChange(_ isConnected: Bool) {
         if !isConnected {

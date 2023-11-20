@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension RegistrationView {
+extension RegistrationViewController {
     
 //    func setupKeyboardHiding() {
 //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

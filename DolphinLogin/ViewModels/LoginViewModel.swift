@@ -44,7 +44,6 @@ class LoginViewModel: LoginViewModelProtocol {
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                print("JSON response from server: \(json)")
                 
                 let loginUser = try JSONDecoder().decode(UserResponse.self, from: data)
                 completion(loginUser)

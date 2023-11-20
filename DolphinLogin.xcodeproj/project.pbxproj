@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D5146F122B094C2D00D92C7E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5146F112B094C2D00D92C7E /* LoginView.swift */; };
+		D5146F122B094C2D00D92C7E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5146F112B094C2D00D92C7E /* LoginViewController.swift */; };
 		D5146F142B09F8B400D92C7E /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5146F132B09F8B400D92C7E /* UserInfoView.swift */; };
 		D56BB6BE2B05470C00B5D8CC /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB6BD2B05470C00B5D8CC /* RegistrationView.swift */; };
 		D56BB6C02B05659600B5D8CC /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB6BF2B05659600B5D8CC /* HeaderView.swift */; };
@@ -28,7 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D5146F112B094C2D00D92C7E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		D5146F112B094C2D00D92C7E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D5146F132B09F8B400D92C7E /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		D56BB6BD2B05470C00B5D8CC /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		D56BB6BF2B05659600B5D8CC /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				D5E84D102B04011C0081A0A0 /* ViewController.swift */,
-				D5146F112B094C2D00D92C7E /* LoginView.swift */,
+				D5146F112B094C2D00D92C7E /* LoginViewController.swift */,
 				D56BB6BD2B05470C00B5D8CC /* RegistrationView.swift */,
 				D56BB6BF2B05659600B5D8CC /* HeaderView.swift */,
 				D5146F132B09F8B400D92C7E /* UserInfoView.swift */,
@@ -218,7 +218,7 @@
 				D56BB6CF2B08CB6100B5D8CC /* ExtensionRegistrationView+Validation.swift in Sources */,
 				D5E84D0F2B04011C0081A0A0 /* SceneDelegate.swift in Sources */,
 				D56BB6C62B080E3300B5D8CC /* ControlsFactory.swift in Sources */,
-				D5146F122B094C2D00D92C7E /* LoginView.swift in Sources */,
+				D5146F122B094C2D00D92C7E /* LoginViewController.swift in Sources */,
 				D5146F142B09F8B400D92C7E /* UserInfoView.swift in Sources */,
 				D56BB6C02B05659600B5D8CC /* HeaderView.swift in Sources */,
 			);

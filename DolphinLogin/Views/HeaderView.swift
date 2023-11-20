@@ -24,6 +24,7 @@ class HeaderView: UIView {
     let makeHeaderLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 60)
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOpacity = 0.5

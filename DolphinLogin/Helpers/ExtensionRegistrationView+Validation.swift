@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension RegistrationView {
+extension RegistrationViewController {
 //    func textFieldDidEndEditing(_ textField: UITextField) {
 //        switch textField {
 //        case firstNameTextField:
