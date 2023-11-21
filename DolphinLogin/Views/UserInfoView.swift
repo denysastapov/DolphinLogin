@@ -8,7 +8,7 @@
 import UIKit
 
 class UserInfoViewController: UIViewController {
-
+    
     private let headerView: HeaderView = {
         let view = HeaderView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,13 +24,21 @@ class UserInfoViewController: UIViewController {
     
     private let userGenderLabel = ControlsFactory.makeLabel(forText: "")
     private let userEmailLabel = ControlsFactory.makeLabel(forText: "")
+    private let userAgeLabel = ControlsFactory.makeLabel(forText: "")
+    
     
     private var user: UserResponseProtocol
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.tintColor = .white
+    }
     
     init(user: UserResponseProtocol) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
         setUpUserInfo()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -39,33 +47,43 @@ class UserInfoViewController: UIViewController {
     
     private func setUpUserInfo() {
         view.backgroundColor = .white
-        self.navigationItem.hidesBackButton = true
         
-        if let imageUrl = URL(string: user.image) {
+        if let imageUrl = URL(string: user.image ?? "") {
             URLSession.shared.dataTask(with: imageUrl) { [weak self] (data, response, error) in
                 guard let self = self else { return }
-
+                
                 if let data = data, let image = UIImage(data: data) {
+                    
                     DispatchQueue.main.async {
                         self.userImageView.image = image
                         self.userImageView.layer.borderWidth = 2.0
                         self.userImageView.layer.borderColor = UIColor.blue.cgColor
-                        self.userImageView.layer.cornerRadius = 130
+                        self.userImageView.layer.cornerRadius = 50
                         self.userImageView.clipsToBounds = true
                     }
                 } else {
                     print("Error loading image: \(error?.localizedDescription ?? "Unknown error")")
+                    DispatchQueue.main.async {
+                        self.userImageView.image = UIImage(named: "default-profile")
+                    }
                 }
             }.resume()
+        } else {
+            DispatchQueue.main.async {
+                self.userImageView.image = UIImage(named: "default-profile")
+            }
         }
         
         headerView.labelText = "\(user.firstName) \n\(user.lastName)"
         userEmailLabel.text = "Email: \(user.email)"
         userGenderLabel.text = "Gender: \(user.gender)"
+        userAgeLabel.text = "Age: \(user.age ?? "")"
+        
         
         let stackViewUserLabels = UIStackView(arrangedSubviews: [
             userEmailLabel,
-            userGenderLabel
+            userGenderLabel,
+            userAgeLabel
         ])
         
         let stackViewUserInfo = UIStackView(arrangedSubviews: [
@@ -74,7 +92,6 @@ class UserInfoViewController: UIViewController {
         ])
         
         view.addSubview(headerView)
-        view.addSubview(stackViewUserLabels)
         view.addSubview(stackViewUserInfo)
         
         stackViewUserLabels.axis = .vertical
@@ -97,9 +114,8 @@ class UserInfoViewController: UIViewController {
             stackViewUserInfo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             stackViewUserInfo.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
             
-            stackViewUserLabels.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackViewUserLabels.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackViewUserLabels.topAnchor.constraint(equalTo: stackViewUserInfo.bottomAnchor, constant: 30)
+            userImageView.widthAnchor.constraint(equalToConstant: 100),
+            userImageView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
 }

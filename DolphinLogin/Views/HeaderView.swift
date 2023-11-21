@@ -59,7 +59,7 @@ class HeaderView: UIView {
             headerImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             headerImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
-            makeHeaderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 50),
+            makeHeaderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100),
             makeHeaderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
         ])
         

@@ -23,7 +23,7 @@
 		D5E84D112B04011C0081A0A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E84D102B04011C0081A0A0 /* ViewController.swift */; };
 		D5E84D162B04011E0081A0A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5E84D152B04011E0081A0A0 /* Assets.xcassets */; };
 		D5E84D242B0408FD0081A0A0 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E84D232B0408FD0081A0A0 /* UserModel.swift */; };
-		D5E84D262B040A750081A0A0 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E84D252B040A750081A0A0 /* LoginViewModel.swift */; };
+		D5E84D262B040A750081A0A0 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E84D252B040A750081A0A0 /* NetworkService.swift */; };
 		D5E84D282B0536C80081A0A0 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E84D272B0536C80081A0A0 /* Network.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +46,7 @@
 		D5E84D152B04011E0081A0A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5E84D1A2B04011E0081A0A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5E84D232B0408FD0081A0A0 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		D5E84D252B040A750081A0A0 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		D5E84D252B040A750081A0A0 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		D5E84D272B0536C80081A0A0 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,7 +122,7 @@
 		D5E84D212B0408920081A0A0 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				D5E84D252B040A750081A0A0 /* LoginViewModel.swift */,
+				D5E84D252B040A750081A0A0 /* NetworkService.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -214,7 +214,7 @@
 				D56BB6CC2B08C1A500B5D8CC /* ValidationFieldsHelper.swift in Sources */,
 				D56BB6C82B08A77700B5D8CC /* UIResponder+Utils.swift in Sources */,
 				D5E84D242B0408FD0081A0A0 /* UserModel.swift in Sources */,
-				D5E84D262B040A750081A0A0 /* LoginViewModel.swift in Sources */,
+				D5E84D262B040A750081A0A0 /* NetworkService.swift in Sources */,
 				D56BB6CF2B08CB6100B5D8CC /* ExtensionRegistrationView+Validation.swift in Sources */,
 				D5E84D0F2B04011C0081A0A0 /* SceneDelegate.swift in Sources */,
 				D56BB6C62B080E3300B5D8CC /* ControlsFactory.swift in Sources */,

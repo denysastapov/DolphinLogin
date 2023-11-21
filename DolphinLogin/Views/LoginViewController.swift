@@ -38,15 +38,15 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLoginViewUI()
-        usernameTextField.text = "kminchelle"
-        passwordTextField.text = "0lelplR"
-        // setupKeyboardHandling()
+        usernameTextField.text = "dpierrof"
+        passwordTextField.text = "Vru55Y4tufI4"
+        setupKeyboardHandling()
     }
     
     private func setUpLoginViewUI() {
         
-        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        //        self.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
         
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         registrationButton.addTarget(self, action: #selector(registrationButtonPressed), for: .touchUpInside)
@@ -102,47 +102,5 @@ class LoginViewController: UIViewController {
     @objc private func registrationButtonPressed() {
         delegate?.registrationButtonPressed()
     }
-    
-    //    private func setupKeyboardHandling() {
-    //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-    //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    //    }
-    //
-    //    @objc private func handleTap() {
-    //        self.endEditing(true)
-    //    }
-    //
-    //    @objc private func keyboardWillShow(_ notification: Notification) {
-    //        guard let userInfo = notification.userInfo,
-    //              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-    //              let currentTextField = UIResponder.currentFirst() as? UITextField else { return }
-    //
-    //        let keyboardTopY = keyboardFrame.cgRectValue.origin.y
-    //        let convertedTextFieldFrame = self.convert(currentTextField.frame, from: currentTextField.superview)
-    //        let textFieldBottomY = convertedTextFieldFrame.origin.y + convertedTextFieldFrame.size.height
-    //
-    //        if textFieldBottomY > keyboardTopY {
-    //            let textBoxY = convertedTextFieldFrame.origin.y
-    //            let newFrameY = (textBoxY - keyboardTopY / 1.3) * -1
-    //            self.frame.origin.y = newFrameY
-    //            print("New y origin: \(self.frame.origin.y)")
-    //            print(newFrameY)
-    //        }
-    //    }
-    //
-    //    @objc private func keyboardWillHide(_ notification: Notification) {
-    //        print("keyboardWillHide")
-    //        self.frame.origin.y = 0
-    //        print("New y origin: \(self.frame.origin.y)")
-    //    }
-    //
-    //    private func adjustContentInsets(_ insets: UIEdgeInsets) {
-    //        self.layoutMargins = insets
-    //    }
-    //
-    //    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    //        textField.resignFirstResponder()
-    //        return true
-    //    }
     
 }

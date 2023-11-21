@@ -9,10 +9,10 @@ import UIKit
 
 class ViewController: UIViewController, NetworkMonitorDelegate, LoginViewControllerDelegate, RegistrationViewControllerDelegate {
     
-    let apiUrl = URL(string: "https://dummyjson.com/auth/login")
+    let loginApiUrl = URL(string: "https://dummyjson.com/auth/login")
     
-    private lazy var loginViewModel: LoginViewModelProtocol = {
-        return LoginViewModel(apiUrl: apiUrl!)
+    private lazy var networkService: NetworkServiceProtocol = {
+        return NetworkService()
     }()
     
     private lazy var loginViewController: LoginViewController = {
@@ -45,15 +45,26 @@ class ViewController: UIViewController, NetworkMonitorDelegate, LoginViewControl
     }
     
     func loginButtonPressed(username: String, password: String) {
-        loginViewModel.loginUser(username: username, password: password) { [weak self] user in
+        guard let loginApiUrl = loginApiUrl else {
+            print("Error: loginApiUrl is nil")
+            return
+        }
+        let loginRequest = UserLoginRequest(username: username, password: password)
+        
+        networkService.sendRequest(url: loginApiUrl, 
+                                   method: "POST",
+                                   body: loginRequest,
+                                   responseType: UserResponse.self
+        ) { [weak self] user in
             guard let self = self else { return }
+            
             if let user = user {
                 DispatchQueue.main.async {
                     let userInfoViewController = UserInfoViewController(user: user)
                     self.navigationController?.pushViewController(userInfoViewController, animated: true)
                 }
             } else {
-                print("Error login button press")
+                print("Error login")
             }
         }
     }
