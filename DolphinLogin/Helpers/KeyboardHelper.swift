@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+extension RegistrationViewController {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
