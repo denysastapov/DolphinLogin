@@ -7,49 +7,53 @@
 
 import Foundation
 
-protocol NetworkServiceProtocol {
-    func sendRequest<T: Codable>(url: URL, 
-                                 method: String,
-                                 body: Encodable?,
-                                 completion: @escaping (T?) -> Void)
-}
-
-class NetworkService: NetworkServiceProtocol {
+class NetworkService {
     
-    static let loginApiUrl = URL(string: "https://dummyjson.com/auth/login")!
-    static let addUserApiUrl = URL(string: "https://dummyjson.com/users/add")!
+    static let baseURL = URL(string: "https://dummyjson.com/")
+    static let loginPath = "auth/login"
+    static let addUserPath = "users/add"
     
-    func sendRequest<T: Codable>(url: URL,
-                                 method: String,
-                                 body: Encodable?,
-                                 completion: @escaping (T?) -> Void) {
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = method
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    struct Request {
+        let baseURL: URL
+        let path: String
+        let method: Method
+        let body: Data?
+        let headers: [String: AnyObject]
         
-        if let body = body, method == "POST" {
-            do {
-                urlRequest.httpBody = try JSONEncoder().encode(body)
-            } catch {
-                print("Error encoding request body: \(error)")
-                completion(nil)
-                return
-            }
+        enum Method: String {
+            case GET
+            case POST
+        }
+    }
+    
+    func sendRequest<T: Codable>(request: Request, completion: @escaping (T?) -> Void) {
+        var urlRequest = URLRequest(url: request.baseURL.appendingPathComponent(request.path))
+        
+        urlRequest.httpMethod = request.method.rawValue
+        
+        for (key, value) in request.headers {
+            urlRequest.addValue("\(value)", forHTTPHeaderField: key)
+        }
+
+        if let body = request.body {
+            urlRequest.httpBody = body
         }
         
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
+        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Error: \(error)")
                 completion(nil)
                 return
             }
-            
-            do {
-                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-                completion(decodedResponse)
-            } catch let decodingError {
-                print("Error decoding response data: \(decodingError)")
-                completion(nil)
+
+            if let data = data {
+                do {
+                    let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(decodedResponse)
+                } catch {
+                    print("Error decoding response data: \(error)")
+                    completion(nil)
+                }
             }
         }.resume()
     }

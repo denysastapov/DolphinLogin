@@ -38,13 +38,13 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLoginViewUI()
-        usernameTextField.text = "dpierrof"
-        passwordTextField.text = "Vru55Y4tufI4"
+        usernameTextField.text = "kminchelle"
+        passwordTextField.text = "0lelplR"
         setupKeyboardHandling()
         
         view.backgroundColor = .white
         
-        viewModel = LoginViewModel(networkService: NetworkService(), navigationController: self.navigationController!)
+        viewModel.navigationController = navigationController
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
@@ -110,9 +110,8 @@ class LoginViewController: UIViewController {
         self.viewModel.login(username: username, password: password)
     }
     
-    internal func registrationButtonPressed() {
-        let registrationViewController = RegistrationViewController()
-        self.navigationController?.pushViewController(registrationViewController, animated: true)
+    func registrationButtonPressed() {
+        viewModel.prepareRegisrationViewController()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

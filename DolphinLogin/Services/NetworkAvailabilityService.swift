@@ -4,7 +4,7 @@
 //
 //  Created by Denys Astapov on 15.11.2023.
 //
-
+import UIKit
 import Network
 
 protocol NetworkAvailabilityServiceDelegate: AnyObject {
@@ -21,12 +21,15 @@ class NetworkAvailabilityService {
 
     private init() {
         monitor = NWPathMonitor()
+        startMonitoring()
     }
 
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             let isConnected = path.status == .satisfied
             self?.delegate?.networkStatusDidChange(isConnected)
+
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "networkStatusChanged"), object: nil, userInfo: ["isConnected": isConnected])
         }
 
         monitor.start(queue: queue)

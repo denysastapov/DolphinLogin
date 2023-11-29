@@ -131,6 +131,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		D5631B622B12523F007EDC4F /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D5146F132B09F8B400D92C7E /* UserInfoViewController.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
 		D56BB6CD2B08C9E400B5D8CC /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +184,7 @@
 				D5E84D0E2B04011C0081A0A0 /* SceneDelegate.swift */,
 				D56BB6CD2B08C9E400B5D8CC /* Helpers */,
 				D5E584BB2B0E68F100C1CB00 /* Services */,
+				D5631B622B12523F007EDC4F /* UserInfo */,
 				D5631B5E2B0FCF87007EDC4F /* Registration */,
 				D5631B582B0FCEAA007EDC4F /* Login */,
 				D5E84D202B04087D0081A0A0 /* Views */,
@@ -189,7 +198,6 @@
 			isa = PBXGroup;
 			children = (
 				D56BB6BF2B05659600B5D8CC /* HeaderView.swift */,
-				D5146F132B09F8B400D92C7E /* UserInfoViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

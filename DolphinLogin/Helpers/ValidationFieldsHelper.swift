@@ -10,7 +10,7 @@ import Foundation
 struct ValidationFieldsHelper {
     
     static func isValidName(_ name: String) -> Bool {
-        let namePredicate = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Zа-яА-Я ]+$")
+        let namePredicate = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z ]+$")
         return namePredicate.evaluate(with: name)
     }
     

@@ -42,3 +42,6 @@ struct UserRegistrationModel: UserRegistrationModelProtocol {
         case age
     }
 }
+struct ErrorResponse: Codable {
+    let message: String
+}
