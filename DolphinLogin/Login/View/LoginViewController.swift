@@ -5,16 +5,16 @@
 //  Created by Denys Astapov on 18.11.2023.
 //
 
-//protocol LoginViewControllerDelegate: AnyObject {
-//    func loginButtonPressed(username: String, password: String)
-//    func registrationButtonPressed()
-//}
-
 import UIKit
 
 class LoginViewController: UIViewController {
     
-    var viewModel: LoginViewModel!
+    private var loginButtonDebouncer: Debouncer?
+    private var registrationButtonDebouncer: Debouncer?
+    private var showAllUsersButtonDebouncer: Debouncer?
+    
+    var viewModelLogin: LoginViewModel!
+    var viewModelShowAllUsers = AllUsersViewModel(model: AllUsersModel(networkService: NetworkService()))
     
     private let headerView: HeaderView = {
         let view = HeaderView()
@@ -26,7 +26,16 @@ class LoginViewController: UIViewController {
     let usernameTextField = TextFieldCreation.makeTextField(placeholder: "Username")
     let passwordTextField = TextFieldCreation.makeTextField(placeholder: "Password", isSecureTextEntry: true)
     let loginButton = ControlsFactory.makeLoginButton()
-    let registrationButton = ControlsFactory.makeRegisterButton()
+    let registrationButton = ControlsFactory.makeButton(
+        setTitle: "Registration",
+        background: .lightGray,
+        setTitleColor: .white
+    )
+    let showAllUsersButton = ControlsFactory.makeButton(
+        setTitle: "Show All Users",
+        background: .white,
+        setTitleColor: .lightGray
+    )
     
     let dolphinImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "dolphin"))
@@ -44,17 +53,29 @@ class LoginViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        viewModel.navigationController = navigationController
+        loginButtonDebouncer = Debouncer(timeInterval: 0.3)
+        registrationButtonDebouncer = Debouncer(timeInterval: 0.3)
+        showAllUsersButtonDebouncer = Debouncer(timeInterval: 0.3)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
         
-        loginButton.addAction(UIAction(handler: { [ weak self]  _ in
-            self?.loginButtonPressed()
+        loginButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.loginButtonDebouncer?.execute(action: {
+                self?.loginButtonPressed()
+            })
         }), for: .touchUpInside)
         
-        registrationButton.addAction(UIAction(handler: { [ weak self ] _ in
-            self?.registrationButtonPressed()
+        registrationButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.registrationButtonDebouncer?.execute(action: {
+                self?.registrationButtonPressed()
+            })
+        }), for: .touchUpInside)
+        
+        showAllUsersButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.showAllUsersButtonDebouncer?.execute(action: {
+                self?.showAllUsersButtonPressed()
+            })
         }), for: .touchUpInside)
     }
     
@@ -70,6 +91,7 @@ class LoginViewController: UIViewController {
         self.view.addSubview(stackView)
         self.view.addSubview(loginButton)
         self.view.addSubview(registrationButton)
+        self.view.addSubview(showAllUsersButton)
         
         stackView.axis = .vertical
         stackView.spacing = 15
@@ -87,31 +109,43 @@ class LoginViewController: UIViewController {
             
             stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -40),
+            stackView.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -15),
             
             usernameTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
             loginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0),
-            loginButton.bottomAnchor.constraint(equalTo: registrationButton.topAnchor, constant: -20),
+            loginButton.bottomAnchor.constraint(equalTo: registrationButton.topAnchor, constant: -15),
             loginButton.widthAnchor.constraint(equalToConstant: 200),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             
             registrationButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0),
-            registrationButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
+            registrationButton.bottomAnchor.constraint(equalTo: showAllUsersButton.topAnchor, constant: -15),
             registrationButton.widthAnchor.constraint(equalToConstant: 200),
-            registrationButton.heightAnchor.constraint(equalToConstant: 50)
+            registrationButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            showAllUsersButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0),
+            showAllUsersButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+            showAllUsersButton.widthAnchor.constraint(equalToConstant: 200),
+            showAllUsersButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     func loginButtonPressed() {
-            guard let username = usernameTextField.text, let password = passwordTextField.text else {
-                return
-            }
-        self.viewModel.login(username: username, password: password)
+        guard let username = usernameTextField.text, let password = passwordTextField.text else {
+            return
+        }
+        viewModelLogin.navigationController = navigationController
+        self.viewModelLogin.login(username: username, password: password)
     }
     
     func registrationButtonPressed() {
-        viewModel.prepareRegisrationViewController()
+        viewModelLogin.navigationController = navigationController
+        viewModelLogin.prepareRegisrationViewController()
+    }
+    
+    func showAllUsersButtonPressed() {
+        viewModelShowAllUsers.navigationCoolController = navigationController
+        viewModelShowAllUsers.fetchAllUsers()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

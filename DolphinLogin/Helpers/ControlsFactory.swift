@@ -26,10 +26,12 @@ class ControlsFactory {
         return segmentedControl
     }
 
-    static func makeRegisterButton() -> UIButton {
+    static func makeButton(setTitle: String,
+                           background: UIColor,
+                           setTitleColor: UIColor) -> UIButton {
         let button = UIButton()
         
-        button.backgroundColor = .lightGray
+        button.backgroundColor = background
         
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOpacity = 0.5
@@ -38,14 +40,14 @@ class ControlsFactory {
         
         button.layer.cornerRadius = 25
 
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(setTitleColor, for: .normal)
 
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 0.5
 
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Register", for: .normal)
+        button.setTitle(setTitle, for: .normal)
 
         return button
     }

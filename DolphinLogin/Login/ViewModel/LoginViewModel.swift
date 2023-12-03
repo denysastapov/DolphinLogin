@@ -20,21 +20,37 @@ class LoginViewModel {
         let loginData = UserLoginRequest(username: username, password: password)
         
         let loginRequest = NetworkService.Request(
-            baseURL: NetworkService.baseURL!,
-            path: NetworkService.loginPath,
+            baseURL: NetworkConstants.baseURL!,
+            path: NetworkConstants.loginPath,
             method: .POST,
-            body: try? JSONEncoder().encode(loginData),
+            body: loginData.asData,
             headers: ["Content-Type": "application/json" as AnyObject]
         )
         
-        networkService.sendRequest(request: loginRequest) { [ weak self ] (user: UserRegistrationModel?) in
-            if let user = user {
-                DispatchQueue.main.async { [ weak self ] in
-                    let userInfoViewController = UserInfoViewController(user: user)
-                    self?.navigationController?.pushViewController(userInfoViewController, animated: true)
+        networkService.sendRequest(request: loginRequest) { [ weak self ] (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    let user = try JSONDecoder().decode(UserRegistrationModel.self, from: response.data)
+                    DispatchQueue.main.async { [ weak self ] in
+                        let userInfoViewController = UserInfoViewController(
+                            user: UserInfoViewController.UserInfo(
+                                firstName: user.firstName!,
+                                lastName: user.lastName!,
+                                image: user.image!,
+                                email: user.email!,
+                                gender: user.gender!,
+                                age: user.age ?? ""
+                            )
+                        )
+                        self?.navigationController?.pushViewController(userInfoViewController, animated: true)
+                    }
                 }
-            } else {
-                print("Error logging in")
+                catch {
+                    print("Error logging in")
+                }
+            case .failure(let error):
+                print("Error \(error))")
             }
         }
     }

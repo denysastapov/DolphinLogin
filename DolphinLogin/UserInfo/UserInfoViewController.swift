@@ -9,6 +9,15 @@ import UIKit
 
 class UserInfoViewController: UIViewController {
     
+    struct UserInfo {
+        let firstName: String
+        let lastName: String
+        let image: String
+        let email: String
+        let gender: String
+        let age: String
+    }
+    
     private let headerView: HeaderView = {
         let view = HeaderView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -27,14 +36,14 @@ class UserInfoViewController: UIViewController {
     private let userAgeLabel = ControlsFactory.makeLabel(forText: "")
     
     
-    private var user: UserRegistrationModelProtocol
+    private var user: UserInfo
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.tintColor = .white
     }
     
-    init(user: UserRegistrationModelProtocol) {
+    init(user: UserInfo) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
         setUpUserInfo()
@@ -47,7 +56,7 @@ class UserInfoViewController: UIViewController {
     private func setUpUserInfo() {
         view.backgroundColor = .white
         
-        if let imageUrl = URL(string: user.image ?? "") {
+        if let imageUrl = URL(string: user.image) {
             URLSession.shared.dataTask(with: imageUrl) { [weak self] (data, response, error) in
                 guard let self = self else { return }
                 
@@ -76,7 +85,7 @@ class UserInfoViewController: UIViewController {
         headerView.labelText = "\(user.firstName) \n\(user.lastName)"
         userEmailLabel.text = "Email: \(user.email)"
         userGenderLabel.text = "Gender: \(user.gender)"
-        userAgeLabel.text = "Age: \(user.age ?? "")"
+        userAgeLabel.text = "Age: \(user.age)"
         
         
         let stackViewUserLabels = UIStackView(arrangedSubviews: [

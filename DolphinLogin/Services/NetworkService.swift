@@ -7,11 +7,16 @@
 
 import Foundation
 
-class NetworkService {
-    
+enum NetworkConstants {
     static let baseURL = URL(string: "https://dummyjson.com/")
     static let loginPath = "auth/login"
     static let addUserPath = "users/add"
+    static let allUsersPath = "users"
+}
+
+class NetworkService {
+    
+    struct UnknownError: Error {}
     
     struct Request {
         let baseURL: URL
@@ -26,7 +31,12 @@ class NetworkService {
         }
     }
     
-    func sendRequest<T: Codable>(request: Request, completion: @escaping (T?) -> Void) {
+    struct Response {
+        let urlResponse: URLResponse
+        let data: Data
+    }
+    
+    func sendRequest(request: Request, completion: @escaping (Result<Response, Error>) -> Void) {
         var urlRequest = URLRequest(url: request.baseURL.appendingPathComponent(request.path))
         
         urlRequest.httpMethod = request.method.rawValue
@@ -42,18 +52,14 @@ class NetworkService {
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Error: \(error)")
-                completion(nil)
+                completion(.failure(error))
                 return
             }
 
-            if let data = data {
-                do {
-                    let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-                    completion(decodedResponse)
-                } catch {
-                    print("Error decoding response data: \(error)")
-                    completion(nil)
-                }
+            if let data = data, let response = response {
+                completion(.success(Response.init(urlResponse: response, data: data)))
+            } else {
+                completion(.failure(UnknownError()))
             }
         }.resume()
     }

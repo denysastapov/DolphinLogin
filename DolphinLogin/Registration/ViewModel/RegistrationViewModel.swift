@@ -57,6 +57,15 @@ class RegistrationViewModel {
         self.userAge = userAge
         ValidationFieldsHelper.isValidAge(userAge) ? isUserAgeValid(true) : isUserAgeValid(false)
     }
+    
+    func isValidRegistration() -> Bool {
+        return ValidationFieldsHelper.isValidName(userFirstName) &&
+        ValidationFieldsHelper.isValidName(userLastName) &&
+        ValidationFieldsHelper.isValidEmail(userEmail) &&
+        ValidationFieldsHelper.isValidPassword(userPassword) &&
+        ValidationFieldsHelper.isValidAge(userAge)
+    }
+    
     func register() {
             
         let registrationData = UserRegistrationModel(
@@ -72,21 +81,37 @@ class RegistrationViewModel {
         )
         
         let registrationRequest = NetworkService.Request(
-            baseURL: NetworkService.baseURL!,
-            path: NetworkService.addUserPath,
+            baseURL: NetworkConstants.baseURL!,
+            path: NetworkConstants.addUserPath,
             method: .POST,
-            body: try? JSONEncoder().encode(registrationData),
+            body: registrationData.asData,
             headers: ["Content-Type": "application/json" as AnyObject]
         )
         
-        networkService.sendRequest(request: registrationRequest) { [ weak self ] (user: UserRegistrationModel?) in
-            if let user = user {
-                DispatchQueue.main.async { [ weak self ] in
-                    let userInfoViewController = UserInfoViewController(user: user)
-                    self?.navigationController?.pushViewController(userInfoViewController, animated: true)
+        networkService.sendRequest(request: registrationRequest) { [ weak self ] (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    let user = try JSONDecoder().decode(UserRegistrationModel.self, from: response.data)
+                    DispatchQueue.main.async { [ weak self ] in
+                        let userInfoViewController = UserInfoViewController(
+                            user: UserInfoViewController.UserInfo(
+                                firstName: user.firstName!,
+                                lastName: user.lastName!,
+                                image: user.image!,
+                                email: user.email!,
+                                gender: user.gender!,
+                                age: user.age!
+                            )
+                        )
+                        self?.navigationController?.pushViewController(userInfoViewController, animated: true)
+                    }
                 }
-            } else {
-                print("Error logging in")
+                catch {
+                    print("Error registration")
+                }
+            case .failure(let error):
+                print("Error \(error)")
             }
         }
     }
