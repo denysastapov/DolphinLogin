@@ -7,23 +7,20 @@ DolphinLogin is a Swift-based iOS application embodying a robust MVVM architectu
 
 # Technical Highlights:
 
-MVVM Architecture:
-
+## MVVM Architecture:
 The core of DolphinLogin is built upon the Model-View-ViewModel (MVVM) architecture. This architectural choice promotes separation of concerns, making code more modular and facilitating maintainability.
-UIColor Hex Extension:
 
+## UIColor Hex Extension:
 Enhancing the codebase, a UIColor extension has been implemented to represent colors using hexadecimal codes. This not only simplifies color management but also contributes to a more readable and concise styling implementation.
-User Registration Validation:
 
+## User Registration Validation:
 Rigorous validation logic has been applied to all user registration fields, ensuring data integrity. This includes checks for various criteria to enhance the robustness of the registration process.
-NetworkAvailabilityService:
 
+## NetworkAvailabilityService:
 Leveraging native iOS Network functionality, the NetworkAvailabilityService monitors and notifies the app of changes in network status. This is achieved through a well-designed service that contributes to a more responsive user experience.
-Keyboard Helper and Utility Helpers:
 
+## Keyboard Helper and Utility Helpers:
 The Keyboard Helper is a thoughtful utility that intelligently manages the user interface, providing a seamless text input experience. Additionally, several utility helpers have been implemented to augment the application's overall functionality and user convenience.
-Developer's Note:
 
+# Developer's Note:
 DolphinLogin is a testament to my commitment to writing clean, maintainable code and implementing advanced iOS development techniques. The application showcases not only my proficiency in Swift but also my dedication to providing users with a reliable and efficient experience.
-
-Explore the source code to delve into the intricacies of MVVM, color management, input validation, and network state handling. Feel free to adapt and extend the codebase to suit your development preferences and project requirements.
